@@ -77,13 +77,18 @@ void copiazaLaptopuriScumpe(struct Laptop* vector, char nrElemente, float pretMi
 	}
 }
 
-struct Laptop getPrimulElementConditionat(struct Laptop* vector, int nrElemente, const char* conditie) {
-	//trebuie cautat elementul care indeplineste o conditie
-	//dupa atributul de tip char*. Acesta este returnat.
-	struct Laptop s;
-	s.id = 1;
-
-	return s;
+struct Laptop getPrimulLaptopByProducator(struct Laptop* vector, int nrElemente, const char* producator) {
+	struct Laptop l;
+	l.producator = NULL;
+	for (int i = 0; i < nrElemente; i++) {
+		if (strcmp(vector[i].producator, producator) == 0) {
+			l = vector[i];
+			l.producator = (char*)malloc(strlen(vector[i].producator) + 1);
+			strcpy_s(l.producator, strlen(vector[i].producator)+1, vector[i].producator);
+			return l;
+		}
+	}
+	return l;
 }
 	
 
@@ -113,5 +118,15 @@ int main() {
 	printf("\n\nLaptopuri Scumpe: \n");
 	afisareVector(laptopuriScumpe, nrLaptopuriScumpe);
 	dezalocare(&laptopuriScumpe, &nrLaptopuriScumpe);
+
+	struct Laptop laptopIdentificat = getPrimulLaptopByProducator(laptop, nrLaptop, "MSI");
+	printf("\n\n Laptopul Identificat:\n");
+	afisare(laptopIdentificat);
+	if (laptopIdentificat.producator != NULL) {
+		free(laptopIdentificat.producator);
+		laptopIdentificat.producator = NULL;
+	}
+	dezalocare(&laptop, &nrLaptop);
+
 	return 0;
 }
